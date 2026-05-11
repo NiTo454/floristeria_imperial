@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+@theme {
+  /* Los colores premium de tu logo sculpted */
+  --color-imperial-gold: #D4AF37;   /* Oro principal */
+  --color-imperial-black: #0A0A0A;  /* Negro mate profundo */
+  --color-imperial-white: #FDFDFD;  /* Blanco crema (para no saturar) */
+
+  /* Tipografía Serif de lujo y Sans limpia */
+  --font-serif: "Playfair Display", serif;
+  --font-sans: "Inter", sans-serif;
+}
+
+/* Configuración base para que el sitio se sienta premium desde el fondo */
+@layer base {
+  body {
+    @apply bg-[--color-imperial-black] text-[--color-imperial-white] antialiased;
+    margin: 0;
+    font-family: var(--font-sans);
+    selection-color: var(--color-imperial-gold);
+    selection-background-color: var(--color-imperial-black);
+  }
+}
