@@ -1,23 +1,45 @@
 @import "tailwindcss";
 
 @theme {
-  /* Los colores premium de tu logo sculpted */
-  --color-imperial-gold: #D4AF37;   /* Oro principal */
-  --color-imperial-black: #0A0A0A;  /* Negro mate profundo */
-  --color-imperial-white: #FDFDFD;  /* Blanco crema (para no saturar) */
+  --color-imperial-bg: var(--theme-bg);
+  --color-imperial-text: var(--theme-text);
+  --color-imperial-accent: var(--theme-accent);
 
-  /* Tipografía Serif de lujo y Sans limpia */
   --font-serif: "Playfair Display", serif;
   --font-sans: "Inter", sans-serif;
 }
 
-/* Configuración base para que el sitio se sienta premium desde el fondo */
+/* MODO CLARO */
+:root {
+  --theme-bg: #FDFDFD;
+  --theme-text: #0A0A0A;
+  --theme-accent: #E2C275; /* Dorado Claro */
+  --hero-light-opacity: 1;
+  --hero-dark-opacity: 0;
+}
+
+/* MODO OSCURO */
+.dark {
+  --theme-bg: #0A0A0A;
+  --theme-text: #FDFDFD;
+  --theme-accent: #A87B32; /* Dorado Oscuro */
+  --hero-light-opacity: 0;
+  --hero-dark-opacity: 1;
+}
+
 @layer base {
   body {
-    @apply bg-[--color-imperial-black] text-[--color-imperial-white] antialiased;
-    margin: 0;
+    background-color: var(--theme-bg);
+    color: var(--theme-text);
     font-family: var(--font-sans);
-    selection-color: var(--color-imperial-gold);
-    selection-background-color: var(--color-imperial-black);
+    transition: background-color 0.5s ease, color 0.5s ease;
   }
+}
+
+.logo-adapt {
+  transition: filter 0.5s ease;
+}
+
+.dark .logo-adapt {
+  filter: brightness(0.85) contrast(1.15) saturate(1.2);
 }

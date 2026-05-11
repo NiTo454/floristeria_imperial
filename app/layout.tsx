@@ -1,14 +1,41 @@
 import type { Metadata } from "next";
-import "./globals.css"; // Tus estilos globales con Tailwind v4 configurado
-import Navbar from "../components/layout/Navbar"; // <-- IMPORTA NAVBAR
-import Footer from "../components/layout/Footer"; // <-- IMPORTA FOOTER
+import { Inter, Playfair_Display } from "next/font/google";
+import "./globals.css";
+import Navbar from "../components/layout/Navbar";
+import Footer from "../components/layout/Footer";
 
-// Configuración de Metadata para SEO premium
+// Optimización de Fuentes
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  display: "swap"
+});
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-serif",
+  style: ['normal', 'italic'],
+  display: "swap"
+});
+
 export const metadata: Metadata = {
-  title: "Floristería Imperial — Tizayuca",
-  description: "Exclusividad botánica y diseños florales premium. Calidad real en cada detalle.",
+  title: {
+    default: "Floristería Imperial | Exclusividad Botánica",
+    template: "%s | Floristería Imperial"
+  },
+  description: "Arreglos florales de lujo, diseños exclusivos y atención premium para eventos en Tizayuca y alrededores.",
+  keywords: ["floristería", "Tizayuca", "arreglos florales premium", "bodas", "eventos de lujo", "rosas"],
+  authors: [{ name: "Syntaxis Labs" }],
   icons: {
-    icon: "/favicon.png", // Asegúrate de tener un favicon.png en /public
+    icon: "/favicon.png",
+    apple: "/apple-touch-icon.png",
+  },
+  openGraph: {
+    title: "Floristería Imperial",
+    description: "Exclusividad botánica y diseños florales premium.",
+    siteName: "Floristería Imperial",
+    locale: "es_MX",
+    type: "website",
   },
 };
 
@@ -18,23 +45,29 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es">
+    // AQUÍ ESTÁ LA SOLUCIÓN AL ERROR ROJO: suppressHydrationWarning
+    <html lang="es" className="scroll-smooth" suppressHydrationWarning>
       <head>
-        {/* Carga de fuentes premium desde Google Fonts */}
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet" />
+        {/* Script Anti-Parpadeo para el Modo Oscuro */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                  document.documentElement.classList.add('dark')
+                } else {
+                  document.documentElement.classList.remove('dark')
+                }
+              } catch (_) {}
+            `,
+          }}
+        />
       </head>
-      {/* Aplicamos el fondo negro mate y las clases de selección de Tailwind */}
-      <body className="bg-[--color-imperial-black] selection:bg-[--color-imperial-gold] selection:text-[--color-imperial-black]">
-        {/* UBICACIÓN DEL NAVBAR (Fixed en la parte superior) */}
+      <body className={`${inter.variable} ${playfair.variable} antialiased bg-[--color-imperial-bg] text-[--color-imperial-text] selection:bg-[--color-imperial-accent] selection:text-[--color-imperial-bg] transition-colors duration-500`}>
         <Navbar />
-
-        {/* CONTENIDO PRINCIPAL DINÁMICO */}
-        {/* Le damos padding-top (pt-24) para que el Navbar fixed no tape el contenido */}
         <main className="pt-24 min-h-screen">
           {children}
         </main>
-
-        {/* UBICACIÓN DEL FOOTER */}
         <Footer />
       </body>
     </html>
